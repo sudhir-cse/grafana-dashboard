@@ -1,0 +1,17 @@
+- hosts: local
+  connection: local
+  tasks:
+    - name: Import dashboard to grafana
+      grafana_dashboard:
+        grafana_url: http://localhost:3000
+        grafana_api_key: eyJrIjoiZmU3RVdoUVd5dEtnaUYzMUY1b2FmdmE1YUVzZXFQTkIiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
+        state: present
+        message: Updated by ansible - Updated by ansible - Updated by ansible -Updated by ansible 5 - Updated by ansible - Updated by ansible - Updated by ansible -Updated by ansible 5- Updated by ansible - Updated by ansible - Updated by ansible -Updated by ansible 1000
+        overwrite: yes
+        path: "/Users/sudhir/kpit-grafana/ansible/grafana-dashboards/apache1.json"
+      register: result
+      ignore_errors: yes
+
+    - name: Debugging variable
+      debug:
+        msg: "Returned result: {{ result }}"

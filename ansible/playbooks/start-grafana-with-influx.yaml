@@ -1,0 +1,16 @@
+---
+- hosts: local
+  tasks:
+  - name: Stop and remove grafan container
+    shell: docker rm -f grafana
+    ignore_errors: yes
+
+  - name: Stop and remove Influx DB container
+    shell: docker rm -f influxdb
+    ignore_errors: yes
+
+  - name: Start Influx DB container
+    shell: docker run -d --name influxdb -v /Users/sudhir/kpit-grafana/influxdb/container-data:/var/lib/influxdb influxdb
+
+  - name: Start Grafana container linked with influxdb
+    shell: docker run -d --name grafana --link influxdb -p 3000:3000 -v /Users/sudhir/kpit-grafana/grafana/container-data:/var/lib/grafana grafana/grafana

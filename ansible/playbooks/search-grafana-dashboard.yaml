@@ -1,0 +1,15 @@
+- hosts: local
+  connection: local
+  tasks:
+    - name: get project foo grafana dashboards
+      set_fact:
+        grafana_dashboards: "{{ lookup('grafana_dashboard', 'grafana_url=http://localhost:3000 grafana_user=admin grafana_password=admin search=foo') }}"
+      register: result
+      ignore_errors: yes
+
+    - name: Debugging variable
+      debug:
+        msg: "Returned result: {{ result }}"
+
+
+

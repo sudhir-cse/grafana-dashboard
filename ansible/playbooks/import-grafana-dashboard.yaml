@@ -1,0 +1,16 @@
+- hosts: local
+  connection: local
+  tasks:
+    - name: Export grafana dashboard
+      grafana_dashboard:
+        grafana_url: http://localhost:3000
+        grafana_api_key: eyJrIjoiZmU3RVdoUVd5dEtnaUYzMUY1b2FmdmE1YUVzZXFQTkIiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
+        state: export
+        uid: 102-9H_ik
+        path: "/Users/sudhir/kpit-grafana/ansible/grafana-dashboards/apache-exported-1.json"
+      register: result
+      ignore_errors: yes
+
+    - name: Debugging variable
+      debug:
+        msg: "Returned result: {{ result }}"
