@@ -1,0 +1,10 @@
+- hosts: local
+  connection: local
+  tasks:
+    - name: Run python script
+      script: test.py 123
+      register: result
+
+    - name: Debugging variable
+      debug:
+        msg: "Result: {{ result }}"

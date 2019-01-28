@@ -1,0 +1,15 @@
+- hosts: local
+  connection: local
+  tasks:
+    - name: JSON manupulation
+      shell: cat /Users/sudhir/kpit-grafana/grafana-dashboard/ansible/grafana-dashboards/apache1.json
+      register: result
+
+    - name: Setting facts
+      set_fact:
+        myvar: "{{ result.stdout | from_json }}"
+        testVar: "{{ myvar.version=10 }}"
+
+    - name: Debugging variable
+      debug:
+        msg: "Version of Dashboard: {{ testVar.version }}"

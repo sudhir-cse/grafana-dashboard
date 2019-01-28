@@ -1,0 +1,5 @@
+---
+grafana_url: http://localhost:3000
+grafana_api_key: eyJrIjoiRnBSWVFzandUbmttZTZjYzNBb0U5SXN6OTBEdTQyY1IiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
+grafana_commit_message: Updated by ansible
+path: /Users/sudhir/kpit-grafana/grafana-dashboard/ansible/grafana-dashboards/apache1.json
