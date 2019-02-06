@@ -10,7 +10,17 @@
     ignore_errors: yes
 
   - name: Start Influx DB container
-    shell: docker run -d --name influxdb -v /Users/sudhir/kpit-grafana/influxdb/container-data:/var/lib/influxdb influxdb
+    shell: >
+      docker run -d --name influxdb 
+      -v /Users/sudhir/kpit-grafana/data/influxdb:/var/lib/influxdb 
+      influxdb:latest
 
   - name: Start Grafana container linked with influxdb
-    shell: docker run -d --name grafana --link influxdb -p 3000:3000 -v /Users/sudhir/kpit-grafana/grafana/container-data:/var/lib/grafana grafana/grafana:5.1.3
+    shell: >
+      docker run -d --name grafana  
+      --link influxdb -p 3000:3000 
+      -v /Users/sudhir/kpit-grafana/data/grafana:/var/lib/grafana
+      -v /Users/sudhir/kpit-grafana/data/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      -v /Users/sudhir/kpit-grafana/data/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
+      grafana/grafana:5.1.3
+  
