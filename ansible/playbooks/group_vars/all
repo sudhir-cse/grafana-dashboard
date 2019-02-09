@@ -1,5 +1,12 @@
 ---
-grafana_url: http://localhost:3000
-grafana_api_key: eyJrIjoiRnBSWVFzandUbmttZTZjYzNBb0U5SXN6OTBEdTQyY1IiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
+# Grafana
+grafana_url: localhost:3000
+grafana_api_key: eyJrIjoiNjFid1VKdWhIbHdTM2dmTDE1NGxoU1QzYnVZbzEwdnUiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
+
+# Dashboard
 grafana_commit_message: Updated by ansible
 path: /Users/sudhir/kpit-grafana/grafana-dashboard/ansible/grafana-dashboards/apache1.json
+
+# Datasource
+grafana_datasource_name: indb
+grafana_datasource_db_version: mydb-updated-final-1

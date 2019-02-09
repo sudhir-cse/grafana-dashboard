@@ -1,0 +1,13 @@
+# Requirements 
+
+Dashboard HTTP Api
+    - create/update grafana dashboard
+    - get dashboard latest version
+
+Datasource HTTP Api
+    - get Datasource via name
+    - Update datasource
+
+Python script
+    - update dashboard json version with the latest version before update
+    - Update datasource json version with the latest version

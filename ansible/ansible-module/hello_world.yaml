@@ -1,0 +1,9 @@
+---
+- hosts: local
+
+  tasks:
+  - name: Test that hellow_module works
+    hellow_world:
+    register: result
+
+  - debug: var=result

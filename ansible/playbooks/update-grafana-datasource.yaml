@@ -1,0 +1,41 @@
+---
+- hosts: local
+  tasks:
+  - name: Gets the grafana datasource by name
+    uri:
+      url: http://{{ grafana_url }}/api/datasources/name/{{ grafana_datasource_name }}
+      method: GET
+      headers:
+        Authorization: Bearer {{ grafana_api_key }}
+    register: response
+
+  - name: Version and DB name
+    debug:
+      msg: "{{ response.json }}"
+
+  - name: Update Datasource database
+    change_datasource_db:
+      payload: "{{ response.json }}"
+      new_database: "{{ grafana_datasource_db_version }}"
+    register: result
+
+  - name: Print response xxxx
+    debug:
+      msg: "{{ result.updated_payload }}"
+
+  - name: Update datasource db
+    uri:
+      url: http://{{ grafana_url }}/api/datasources/{{ result.id }}
+      method: PUT
+      headers:
+        Authorization: Bearer {{ grafana_api_key }}
+        Accept: application/json
+        Content-Type: application/json
+      body: "{{ result.updated_payload | to_json }}"
+    register: final_result
+
+  - name: Print response
+    debug:
+      msg: "{{ final_result }}"
+
+  
