@@ -4,7 +4,7 @@
 
     - name: Get Grafana dashboard uid from json file
       grafana_dashboard_uid:
-        dashboard_json_path: "{{ path }}"
+        dashboard_json_path: "{{ input_path }}"
       register: dashboard_uid
 
     - name: Get Grafana dashboard info
@@ -19,27 +19,26 @@
 
     - name: Prepare Grafana dashboard
       grafana_dashboard_prepare:
-        dashboard_json_path: "{{ path }}"
+        input_path: "{{ input_path }}"
+        output_path: "{{ output_path }}"
         version: "{{ dashboard_info.json.meta.version }}"
-        read_only: true
+        editable: true
+        datasource: "{{ grafana_datasource_name }}"
       register: dashboard_prepared
         
-
-    # - name: Import dashboard to grafana
-    #   grafana_dashboard:
-    #     grafana_url: "http://{{ grafana_url }}"
-    #     grafana_api_key: "{{ grafana_api_key }}"
-    #     state: present
-    #     message: "{{ grafana_commit_message }}"
-    #     overwrite: no
-    #     path: "{{ path }}"
-    #   register: result
-    #   ignore_errors: yes
-
+    - name: Import dashboard to grafana
+      grafana_dashboard:
+        grafana_url: "http://{{ grafana_url }}"
+        grafana_api_key: "{{ grafana_api_key }}"
+        state: present
+        message: "{{ grafana_commit_message }}"
+        overwrite: no
+        path: "{{ output_path }}"
+      register: result
 
     - name: Debugging variable
       debug:
-        msg: "Returned result: {{ info_result.json.meta }}"
+        msg: "{{ result }}"
 
 
 
