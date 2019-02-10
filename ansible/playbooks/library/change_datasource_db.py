@@ -14,6 +14,7 @@ def main():
     module = AnsibleModule(argument_spec=fields)
     payload = ast.literal_eval(module.params["payload"])
     payload['database'] = module.params["new_database"]
+    payload['readOnly'] = False
     #payload["_hack"] = "null"
 
     module.exit_json(changed=True, updated_payload=payload, id=payload['id'])

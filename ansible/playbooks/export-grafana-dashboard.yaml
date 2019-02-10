@@ -3,14 +3,15 @@
   tasks:
     - name: Import dashboard to grafana
       grafana_dashboard:
-        grafana_url: "{{ grafana_url }}"
+        grafana_url: "http://{{ grafana_url }}"
         grafana_api_key: "{{ grafana_api_key }}"
         state: present
         message: "{{ grafana_commit_message }}"
-        overwrite: yes
+        overwrite: no
         path: "{{ path }}"
       register: result
       ignore_errors: yes
+
 
     - name: Debugging variable
       debug:
