@@ -1,18 +1,46 @@
 - hosts: local
   connection: local
   tasks:
-    - name: Import dashboard to grafana
-      grafana_dashboard:
-        grafana_url: "http://{{ grafana_url }}"
-        grafana_api_key: "{{ grafana_api_key }}"
-        state: present
-        message: "{{ grafana_commit_message }}"
-        overwrite: no
-        path: "{{ path }}"
-      register: result
-      ignore_errors: yes
+
+    - name: Get Grafana dashboard uid from json file
+      grafana_dashboard_uid:
+        dashboard_json_path: "{{ path }}"
+      register: dashboard_uid
+
+    - name: Get Grafana dashboard info
+      uri:
+        url: http://{{ grafana_url }}/api/dashboards/uid/{{ dashboard_uid.uid }}
+        method: GET
+        headers:
+          Authorization: Bearer {{ grafana_api_key }}
+          Accept: application/json
+          Content-Type: application/json
+      register: dashboard_info
+
+    - name: Prepare Grafana dashboard
+      grafana_dashboard_prepare:
+        dashboard_json_path: "{{ path }}"
+        version: "{{ dashboard_info.json.meta.version }}"
+        read_only: true
+      register: dashboard_prepared
+        
+
+    # - name: Import dashboard to grafana
+    #   grafana_dashboard:
+    #     grafana_url: "http://{{ grafana_url }}"
+    #     grafana_api_key: "{{ grafana_api_key }}"
+    #     state: present
+    #     message: "{{ grafana_commit_message }}"
+    #     overwrite: no
+    #     path: "{{ path }}"
+    #   register: result
+    #   ignore_errors: yes
 
 
     - name: Debugging variable
       debug:
-        msg: "Returned result: {{ result }}"
+        msg: "Returned result: {{ info_result.json.meta }}"
+
+
+
+  
