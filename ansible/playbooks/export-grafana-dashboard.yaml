@@ -22,23 +22,36 @@
         input_path: "{{ input_path }}"
         output_path: "{{ output_path }}"
         version: "{{ dashboard_info.json.meta.version }}"
-        editable: true
+        editable: false
         datasource: "{{ grafana_datasource_name }}"
+        commit_message: "Updated by ansible awesome "
+        overwrite: true
       register: dashboard_prepared
-        
-    - name: Import dashboard to grafana
-      grafana_dashboard:
-        grafana_url: "http://{{ grafana_url }}"
-        grafana_api_key: "{{ grafana_api_key }}"
-        state: present
-        message: "{{ grafana_commit_message }}"
-        overwrite: no
-        path: "{{ output_path }}"
-      register: result
+
+    - name: Export dashboard to remote grafana
+      uri:
+        url: http://{{ grafana_url }}/api/dashboards/db
+        method: POST
+        headers:
+          Authorization: Bearer {{ grafana_api_key }}
+          Accept: application/json
+          Content-Type: application/json
+        body: "{{ dashboard_prepared.dashboard | to_json }}"
+      register: final_result
+
+    # - name: Import dashboard to grafana
+    #   grafana_dashboard:
+    #     grafana_url: "http://{{ grafana_url }}"
+    #     grafana_api_key: "{{ grafana_api_key }}"
+    #     state: present
+    #     message: "{{ grafana_commit_message }}"
+    #     overwrite: no
+    #     path: "{{ output_path }}"
+    #   register: result
 
     - name: Debugging variable
       debug:
-        msg: "{{ result }}"
+        msg: "{{ final_result }}"
 
 
 

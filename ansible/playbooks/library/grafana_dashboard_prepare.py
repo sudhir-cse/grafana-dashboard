@@ -6,35 +6,35 @@ import json
 import ast
 
 def grafana_update_dashboard_version(dashboard, version):
-    dashboard['version'] = version
+    dashboard['dashboard']['version'] = version
     return dashboard
 
 def grafana_panels_update_datasource(dashboard, datasource):
-    for panel in dashboard['panels']:
+    for panel in dashboard['dashboard']['panels']:
         try:
             if panel['datasource']:
                 print("Updating dashboard: {}, panel: {}".format(
-                    dashboard['title'], panel['title']))
+                    dashboard['dashboard']['title'], panel['title']))
                 panel['datasource'] = datasource
                 print("updated: " +  panel['datasource'] + " >> " + datasource)
 
         except KeyError:
             print("Skipping dashboard: {}, panel: {}".format(
-                dashboard['title'], panel['title']))
+                dashboard['dashboard']['title'], panel['title']))
     return dashboard
 
 def grafana_templating_update_datasource(dashboard, datasource):
-    for item in dashboard['templating']['list']:
+    for item in dashboard['dashboard']['templating']['list']:
         try:
             if item['datasource']:
                 print("Updating dashboard: {}, templating-item: {}".format(
-                    dashboard['title'], item['label']))
+                    dashboard['dashboard']['title'], item['label']))
                 item['datasource'] = datasource
                 print("updated: " +  item['datasource'] + " >>>> " + datasource)
 
         except KeyError:
             print("Dashboard: {}, templating-item: {} has no datasource field".format(
-                dashboard['title'], item['label']))
+                dashboard['dashboard']['title'], item['label']))
     return dashboard
 
 def main():
@@ -44,26 +44,30 @@ def main():
         "output_path": {"required": True, "type": "str"},
         "version": {"required": True, "type": "int"},
         "editable": {"required": True, "type": "bool"},
-        "datasource": {"required": True, "type": "str"} 
+        "datasource": {"required": True, "type": "str"},
+        "commit_message": {"required": True, "type": "str"},
+        "overwrite": {"required": True, "type": "bool"} 
     }
     module = AnsibleModule(argument_spec=fields)
     
     try:
         with open(module.params['input_path'], 'r') as json_file:
-            dashboard = json.load(json_file)
-
+            payload = json.load(json_file)
     except Exception as e:
         raise GrafanaAPIException("Can't load json file %s" % to_native(e))
 
-    version_updated = grafana_update_dashboard_version(dashboard, module.params["version"])
+    # Check that the dashboard JSON is nested under the 'dashboard' key
+    if 'dashboard' not in payload:
+        payload = {'dashboard': payload}
+
+    payload["message"] = module.params["commit_message"]
+    payload["overwrite"] = module.params["overwrite"]
+    #payload['dashboard']['editable'] = module.params['editable']
+
+    version_updated = grafana_update_dashboard_version(payload, module.params["version"])
     panels_datasource_updated = grafana_panels_update_datasource(version_updated, module.params["datasource"])
     templating_datasource_updated = grafana_templating_update_datasource(panels_datasource_updated, module.params["datasource"])
-    templating_datasource_updated['editable'] = module.params['editable']
-
-    # payload = ast.literal_eval(module.params["payload"])
-    # payload['database'] = module.params["new_database"]
-    # payload['readOnly'] = False
-    # #payload["_hack"] = "null"
+    templating_datasource_updated['dashboard']['editable'] = module.params['editable']
 
     with open(module.params['output_path'], 'w') as outfile:
         json.dump(templating_datasource_updated, outfile)

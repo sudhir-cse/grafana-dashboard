@@ -5,7 +5,7 @@ grafana_api_key: eyJrIjoiNjFid1VKdWhIbHdTM2dmTDE1NGxoU1QzYnVZbzEwdnUiLCJuIjoiYWR
 
 # Dashboard
 grafana_commit_message: Updated by ansible
-input_path: /Users/sudhir/kpit-grafana/grafana-dashboard/ansible/grafana-dashboards/Apache-ds-test-1549815389342-updated.json
+input_path: /Users/sudhir/kpit-grafana/grafana-dashboard/ansible/grafana-dashboards/Apache-ds-test-1549815389342.json
 output_path: /Users/sudhir/kpit-grafana/grafana-dashboard/ansible/grafana-dashboards/Apache-ds-test-1549815389342-updated.json
 
 # Datasource
