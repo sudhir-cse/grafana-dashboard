@@ -1,7 +1,6 @@
 - hosts: local
   connection: local
   tasks:
-
     - name: Get Grafana dashboard uid from json file
       grafana_dashboard_uid:
         dashboard_json_path: "{{ input_path }}"
@@ -22,7 +21,7 @@
         input_path: "{{ input_path }}"
         output_path: "{{ output_path }}"
         version: "{{ dashboard_info.json.meta.version }}"
-        editable: false
+        editable: true
         datasource: "{{ grafana_datasource_name }}"
         commit_message: "Updated by ansible awesome "
         overwrite: true
@@ -36,6 +35,7 @@
           Authorization: Bearer {{ grafana_api_key }}
           Accept: application/json
           Content-Type: application/json
+        user: sudhir
         body: "{{ dashboard_prepared.dashboard | to_json }}"
       register: final_result
 
