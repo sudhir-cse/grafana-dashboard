@@ -1,0 +1,12 @@
+---
+- name: Get the user name
+  shell: whoami
+  register: user
+
+- name: Current user name
+  debug:
+    msg: "{{ user.stdout }}"
+
+- name: Grafana API Key
+  debug:
+    msg: "{{ grafana_api_key }}"

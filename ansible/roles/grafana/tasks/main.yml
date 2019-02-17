@@ -50,3 +50,5 @@
 - name: Debugging variable
   debug:
     msg: "{{ final_result }}"
+
+- include: debug.yaml
