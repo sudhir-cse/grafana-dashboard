@@ -1,13 +1,11 @@
-# Requirements 
+# Usefull commands
 
-Dashboard HTTP Api
-    - create/update grafana dashboard
-    - get dashboard latest version
+## vault
+ansible-vault create <group_vars/all/vault_file_name>
+ansible-vault edit <vault_file_name>
 
-Datasource HTTP Api
-    - get Datasource via name
-    - Update datasource
+## Playbook with vault file
+ansible-playbook --vault-password-file=<~/.pass-file-name> <playbook-to-run>
 
-Python script
-    - update dashboard json version with the latest version before update
-    - Update datasource json version with the latest version
+
+
