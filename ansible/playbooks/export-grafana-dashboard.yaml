@@ -1,3 +1,10 @@
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Get the current user
+      shell: whoami
+      register: user
+    
 - hosts: local
   connection: local
   tasks:
@@ -23,7 +30,7 @@
         version: "{{ dashboard_info.json.meta.version }}"
         editable: true
         datasource: "{{ grafana_datasource_name }}"
-        commit_message: "Updated by ansible awesome "
+        commit_message: "[User: {{ user.stdout }}] Updated by ansible awesome "
         overwrite: true
       register: dashboard_prepared
 
@@ -51,7 +58,7 @@
 
     - name: Debugging variable
       debug:
-        msg: "{{ final_result }}"
+        msg: "{{ user.stdout }}"
 
 
 
