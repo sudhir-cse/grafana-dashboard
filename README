@@ -1,0 +1,27 @@
+# User Guide
+
+## Local development setup 
+- For the first time, pull Grafana and InfluxDB docker image from public docker repo.
+  docker pull grafana/grafana:5.1.3
+  docker pull influxdb:latest
+
+- cd into <path_to>data-management/dataquality/ansible and run the following playbook:
+  ansible-playbook start_grafana_with_influx.yaml
+
+- Open a web browser and navigate to the following url to access Grafana.
+  http://localhost:3000
+
+- While configuring datasource(InfluxDB), enter 'http://influxdb:8082' as influxdb url. 
+
+## Grafana dashboard
+
+- Save passphrase in ~/.grafana_api_key_pass.txt. Contact admin for pass-phrase
+
+- Build dashboard on local grafana instance. Export it as a json file and move it to
+  <path_to>/data-management/dataquality/grafana/dashboards/
+
+- cd into <path_to>data-management/dataquality/ansible and run the following playbook
+  ansible-playbook -i <inventory_path.yaml> --vault-password-file=~/.pass_file_name.txt export_grafana_dashboard.yaml --extra-vars="grafana_json_file=<json_file_name.json>"
+  
+## Update of datasource's database
+- Run as usuall but with passphrase to decrypt grafana_api_key.
