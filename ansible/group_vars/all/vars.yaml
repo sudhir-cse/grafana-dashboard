@@ -1,7 +1,7 @@
 ---
 # Grafana
 grafana_url: localhost:3000
-# grafana_api_key: eyJrIjoiNjFid1VKdWhIbHdTM2dmTDE1NGxoU1QzYnVZbzEwdnUiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
+grafana_api_key: eyJrIjoiNjFid1VKdWhIbHdTM2dmTDE1NGxoU1QzYnVZbzEwdnUiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
 
 # Dashboard
 grafana_commit_message: Updated by ansible
